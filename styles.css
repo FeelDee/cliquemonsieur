@@ -5,6 +5,7 @@ body {
     height: 100%;
     width: 100%;
     font-family: Arial, sans-serif;
+    overflow: hidden;
 }
 
 body {
@@ -29,4 +30,16 @@ img {
     font-size: 36px;
     text-align: center;
     color: #f4f4f4;
+}
+
+.shake {
+    animation: shake 0.2s;
+}
+
+@keyframes shake {
+    0% { transform: translate(0); }
+    25% { transform: translate(-4px, 3px); }
+    50% { transform: translate(3px, -2px); }
+    75% { transform: translate(-3px, -4px); }
+    100% { transform: translate(0); }
 }

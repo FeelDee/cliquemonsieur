@@ -32,16 +32,25 @@ function onLoad() {
 }
 
 let lastRange;
+let changing = false;
 
 function cliqueMonsieur() {
+    if (changing) {
+        return;
+    }
+    changing = true;
+    setTimeout(() => {
+        changing = false;
+    }, 200)
+
     monsieursCount += 1;
     document.getElementById('compte-monsieur').innerText = 'Nombre de Monsieurs: ' + monsieursCount;
 
-    let magicNumber = Math.random() * totalOccurrences;
+    shake();
 
-    while (lastRange && magicNumber >= lastRange.min && magicNumber < lastRange.max) {
+    do {
         magicNumber = Math.random() * totalOccurrences;
-    }
+    } while (lastRange && magicNumber >= lastRange.min && magicNumber < lastRange.max)
 
     monsieursList.forEach(monsieur => {
         if (magicNumber >= monsieur.min && magicNumber < monsieur.max) {
@@ -49,6 +58,14 @@ function cliqueMonsieur() {
             document.getElementById('monsieur').src = monsieur.file;
         }
     });
+}
+
+function shake() {
+    document.body.classList.add("shake");
+
+    setTimeout(() => {
+        document.body.classList.remove("shake");
+    }, 200);
 }
 
 document.addEventListener("DOMContentLoaded", onLoad);
