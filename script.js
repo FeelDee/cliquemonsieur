@@ -3,11 +3,7 @@ let monsieursCount = 0;
 let monsieursList = [
     {
         file: 'monsieurs/apt-moo.png',
-        occurrences: 20,
-    },
-    {
-        file: 'monsieurs/astromonsieur.jpg',
-        occurrences: 10,
+        occurrences: 2,
     },
     {
         file: 'monsieurs/JoeLeBoxeur.png',
@@ -15,7 +11,15 @@ let monsieursList = [
     },
     {
         file: 'monsieurs/shrug.jpeg',
-        occurrences: 5
+        occurrences: 5,
+    },
+    {
+        file: 'monsieurs/citrusface.png',
+        occurrences: 10,
+    },
+    {
+        file: 'monsieurs/monsieurarbre.png',
+        occurrences: 10,
     }
 ];
 
