@@ -43,3 +43,9 @@ img {
     75% { transform: translate(-3px, -4px); }
     100% { transform: translate(0); }
 }
+
+@media (max-width: 780px) {
+    #compte-monsieur {
+        font-size: 20px;
+    }
+}
