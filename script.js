@@ -39,14 +39,6 @@ let lastRange;
 let changing = false;
 
 function cliqueMonsieur() {
-    if (changing) {
-        return;
-    }
-    changing = true;
-    setTimeout(() => {
-        changing = false;
-    }, 200)
-
     monsieursCount += 1;
     document.getElementById('compte-monsieur').innerText = 'Nombre de Monsieurs: ' + monsieursCount;
 
