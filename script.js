@@ -55,6 +55,7 @@ function cliqueMonsieur() {
         if (magicNumber >= monsieur.min && magicNumber < monsieur.max) {
             lastRange = { min: monsieur.min, max: monsieur.max };
             document.getElementById('monsieur').src = monsieur.file;
+            changeFavicon(monsieur.file);
         }
     });
 }
@@ -71,6 +72,18 @@ function shake() {
         document.body.classList.remove("shake");
         shaking = false;
     }, 200);
+}
+
+function changeFavicon(src) {
+    const link = document.head.querySelector("link[rel~='icon']");
+    document.head.removeChild(link);
+
+    const newLink = document.createElement('link');
+    newLink.rel = 'icon';
+    newLink.type = 'image/x-icon';
+    newLink.href = src;
+
+    document.head.appendChild(newLink);
 }
 
 document.addEventListener("DOMContentLoaded", onLoad);
