@@ -2,9 +2,9 @@
 
 Pour que tu puisses cliquer autant de Monsieurs que tu veux!!!
 
-http://cliquemonsieur.ca
+https://cliquemonsieur.ca
 
-### Acknowledgements
+### Credits
 
 Concept imaginé et monsieurs dessinés par Félix Brun
 
