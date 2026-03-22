@@ -40,7 +40,6 @@ function onLoad() {
 }
 
 let lastRange;
-let changing = false;
 
 function cliqueMonsieur() {
     monsieursCount += 1;
@@ -60,11 +59,17 @@ function cliqueMonsieur() {
     });
 }
 
+let shaking = false;
+
 function shake() {
+    if (shaking) return;
+    shaking = true;
+
     document.body.classList.add("shake");
 
     setTimeout(() => {
         document.body.classList.remove("shake");
+        shaking = false;
     }, 200);
 }
 
