@@ -6,4 +6,6 @@ http://cliquemonsieur.ca
 
 ### Acknowledgements
 
-[Cursor Icon from flaticon](https://www.flaticon.com/free-icons/cursor)
+Concept imaginé et monsieurs dessinés par Félix Brun
+
+Site web nerded out par Philippe Ducas
