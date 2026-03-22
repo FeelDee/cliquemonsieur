@@ -32,6 +32,20 @@ body {
     color: #f4f4f4;
 }
 
+#acknowledgements {
+    position:fixed;
+    top: 10px;
+    right: 10px;
+    font-size: 12px;
+    text-align: right;
+    color:#555;
+    text-decoration: none;
+}
+
+#acknowledgements:hover {
+    text-decoration: underline;
+}
+
 .shake {
     animation: shake 0.2s;
 }
