@@ -1,32 +1,4 @@
 let monsieursCount = 0;
-
-let monsieursList = [
-    {
-        file: 'monsieurs/baboune.png',
-        occurrences: 10,
-    },
-    {
-        file: 'monsieurs/bobby.png',
-        occurrences: 1,
-    },
-    {
-        file: 'monsieurs/felix.png',
-        occurrences: 10,
-    },
-    {
-        file: 'monsieurs/hagrid.png',
-        occurrences: 10,
-    },
-    {
-        file: 'monsieurs/robert.png',
-        occurrences: 10,
-    },
-    {
-        file: 'monsieurs/vampire.png',
-        occurrences: 10,
-    }
-];
-
 let totalOccurrences = 0;
 
 function onLoad() {
@@ -84,6 +56,20 @@ function changeFavicon(src) {
     newLink.href = src;
 
     document.head.appendChild(newLink);
+}
+
+let currentPage = 'clique';
+
+function navigate(page) {
+    if (page == currentPage) return;
+
+    document.getElementById(`${currentPage}-nav`).classList.remove('active-nav');
+    document.getElementById(`${page}-nav`).classList.add('active-nav');
+
+    document.getElementById(`${currentPage}-page`).classList.add('hidden');
+    document.getElementById(`${page}-page`).classList.remove('hidden');
+
+    currentPage = page;
 }
 
 document.addEventListener("DOMContentLoaded", onLoad);

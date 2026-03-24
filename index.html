@@ -10,9 +10,20 @@
 </head>
 
 <body>
+    <script src="list.js" defer></script>
     <script src="script.js" defer></script>
-    <img id="monsieur" src="assets/title.png" alt="Monsieur" onclick="cliqueMonsieur()">
-    <p id="compte-monsieur"></p>
+    <div id="clique-page" class="page">
+        <img id="monsieur" src="assets/title.png" alt="Monsieur" onclick="cliqueMonsieur()">
+        <p id="compte-monsieur"></p>
+    </div>
+    <div id="dessine-page" class="page hidden">
+        <canvas id="dessine-monsieur" width="200" height="200"></canvas>
+        <p id="dessine-monsieur-description">Dessine Monsieur</p>
+    </div>
+    <div id="menu">
+        <img id="clique-nav" class="active-nav" src="assets/cursor.svg" onclick="navigate('clique')">
+        <img id="dessine-nav" src="assets/pencil.svg" onclick="navigate('dessine')">
+    </div>
     <a id="acknowledgements" href="https://github.com/FeelDee/cliquemonsieur">créé par Félix Brun et Philippe Ducas</a>
 </body>
 
