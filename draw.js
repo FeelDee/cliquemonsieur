@@ -2,6 +2,8 @@ const canvas = document.getElementById('dessine-canvas');
 const ctx = canvas.getContext('2d');
 
 const ZOOM_FACTOR = 3;
+const CANVAS_WIDTH = 200;
+const CANVAS_HEIGHT = 200;
 
 /* COLOR PICKER */
 
@@ -112,8 +114,46 @@ function stopDrawing() {
 
 /* BUCKET TOOL FUNCTIONS */
 
+function getPixelData(data, { x, y }) {
+    // In ImageData object, pixel data is encoded as [r, g, b, a, r, g, b, a, ...]
+    const pos = x + y * CANVAS_WIDTH;
+    return `rgba(${data[pos * 4 + 0]}, ${data[pos * 4 + 1]}, ${data[pos * 4 + 2]}, ${data[pos * 4 + 3] / 255})`;
+}
+
+function getPixelNeighbors({ x, y }) {
+    const neighbors = [];
+    if (x > 0) neighbors.push({ x: x - 1, y });
+    if (y > 0) neighbors.push({ x, y: y - 1 });
+    if (x < CANVAS_WIDTH) neighbors.push({ x: x + 1, y });
+    if (y < CANVAS_HEIGHT) neighbors.push({ x, y: y + 1});
+    return neighbors;
+}
+
+function stringifyPixel({ x, y }) {
+    return `x${x}y${y}`;
+}
+
 function fill(x, y) {
-    console.log('fill', x, y);
+    const imageData = ctx.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT); // rgba
+    const pixels = imageData.data;
+    const visited = new Set();
+    const neighbors = [{ x, y }];
+    const areaColor = getPixelData(pixels, { x, y });
+
+    while (neighbors.length > 0) {
+        const pixel = neighbors.shift();
+        ctx.fillRect(pixel.x, pixel.y, 1, 1); // could be optimized with putImageData
+        
+        for (const neighbor of getPixelNeighbors(pixel)) {
+            const hash = stringifyPixel(neighbor);
+            if (visited.has(hash)) continue;
+            visited.add(hash);
+
+            if (getPixelData(pixels, neighbor) == areaColor) {
+                neighbors.push(neighbor);
+            }
+        }
+    }
 }
 
 let line = { lastX: 0, lastY: 0 }
