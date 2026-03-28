@@ -16,6 +16,10 @@ let monsieursList = [
         occurrences: 10,
     },
     {
+        file: 'monsieurs/patate.png',
+        occurrences: 10,
+    },
+    {
         file: 'monsieurs/robert.png',
         occurrences: 10,
     },
