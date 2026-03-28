@@ -13,6 +13,10 @@ body {
     background-color: #111;
 }
 
+img {
+    image-rendering: pixelated;
+}
+
 .page {
     display: flex;
     justify-content: center;
@@ -41,8 +45,8 @@ body {
     img {
         padding: 5px;
         margin: 5px;
-        width: 32px;
-        height: 32px;
+        width: 48px;
+        height: 48px;
         cursor: pointer;
         border-radius: 10px;
     }
@@ -82,7 +86,6 @@ body {
     max-width: 80vw;
     max-height: 80vh;
     object-fit: contain;
-    image-rendering: pixelated;
 }
 
 #compte-monsieur {
@@ -95,11 +98,43 @@ body {
 /* PAGE DESSINE MONSIEUR */
 
 #dessine-monsieur {
+    display: flex;
+    flex-direction: row;
+}
+
+#dessine-canvas {
     width: 600px;
     height: 600px;
     object-fit: contain;
     image-rendering: pixelated;
     border: 1px solid #f4f4f4;
+}
+
+#dessine-tools {
+    display: flex;
+    flex-direction: column;
+
+    div {
+        background-color: #333;
+        padding: 5px;
+    }
+
+    .dessine-tool {
+        padding: 3px;
+        cursor: pointer;
+    }
+
+    .dessine-tool:hover {
+        background-color: #555;
+    }
+
+    .dessine-tool:active {
+        background-color: #777;
+    }
+
+    .active-tool {
+        background-color: #444;
+    }
 }
 
 #dessine-monsieur-description {

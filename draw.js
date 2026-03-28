@@ -1,8 +1,19 @@
-const canvas = document.getElementById('dessine-monsieur');
+const canvas = document.getElementById('dessine-canvas');
 const ctx = canvas.getContext('2d');
-ctx.fillStyle = 'white';
 
 const ZOOM_FACTOR = 3;
+
+/* COLOR PICKER */
+
+function changeColor() {
+    const colorPicker = document.getElementById('color-picker-input');
+    ctx.fillStyle = colorPicker.value;
+}
+
+// initialize color
+changeColor();
+
+/* PEN TOOL FUNCTIONS*/
 
 const pixelsToDraw = [];
 
@@ -99,25 +110,61 @@ function stopDrawing() {
     draw();
 }
 
+/* BUCKET TOOL FUNCTIONS */
+
+function fill(x, y) {
+    console.log('fill', x, y);
+}
+
 let line = { lastX: 0, lastY: 0 }
 
+function noop() {}
+
+let tools = {
+    pen: {
+        mousedown: (x, y) => {
+            startDrawing();
+            drawPixel(x, y);
+            line.lastX = x;
+            line.lastY = y;
+        },
+        mousemove: (x, y) => {
+            if (!isDrawing) return;
+            drawLine(line.lastX, line.lastY, x, y)
+            drawPixel(x, y);
+            line.lastX = x;
+            line.lastY = y;
+        },
+        mouseup: stopDrawing
+    },
+    bucket: {
+        mousedown: fill,
+        mousemove: noop,
+        mouseup: noop
+    }
+}
+
+let currentTool = 'pen';
+
+function changeTool(tool) {
+    if (tool == currentTool) return;
+
+    document.getElementById(`${currentTool}-tool`).classList.remove('active-tool');
+    document.getElementById(`${tool}-tool`).classList.add('active-tool');
+
+    currentTool = tool;
+}
+
 canvas.addEventListener('mousedown', (ev) => {
-    startDrawing();
     const x = Math.floor(ev.offsetX / ZOOM_FACTOR);
     const y = Math.floor(ev.offsetY / ZOOM_FACTOR);
-    drawPixel(x, y);
-    line.lastX = x;
-    line.lastY = y;
+    tools[currentTool].mousedown(x, y);
 });
 
 canvas.addEventListener('mousemove', (ev) => {
-    if (!isDrawing) return;
     const x = Math.floor(ev.offsetX / ZOOM_FACTOR);
     const y = Math.floor(ev.offsetY / ZOOM_FACTOR);
-    drawLine(line.lastX, line.lastY, x, y)
-    drawPixel(x, y);
-    line.lastX = x;
-    line.lastY = y;
+    tools[currentTool].mousemove(x, y);
 });
 
 canvas.addEventListener('mouseup', stopDrawing);

@@ -18,12 +18,23 @@
         <p id="compte-monsieur"></p>
     </div>
     <div id="dessine-page" class="page hidden">
-        <canvas id="dessine-monsieur" width="200" height="200"></canvas>
+        <div id="dessine-monsieur">
+            <canvas id="dessine-canvas" width="200" height="200"></canvas>
+            <div id="dessine-tools">
+                <div id="main-tools">
+                    <img id="pen-tool" class="dessine-tool active-tool" src="assets/pencil_24p.png" onclick="changeTool('pen')">
+                    <img id="bucket-tool" class="dessine-tool" src="assets/bucket_24p.png" onclick="changeTool('bucket')">
+                </div>
+                <div id="color">
+                    <input type="color" id="color-picker-input" oninput="changeColor()">
+                </div>
+            </div>
+        </div>
         <p id="dessine-monsieur-description">Dessine Monsieur</p>
     </div>
     <div id="menu">
-        <img id="clique-nav" class="active-nav" src="assets/cursor.svg" onclick="navigate('clique')">
-        <img id="dessine-nav" src="assets/pencil.svg" onclick="navigate('dessine')">
+        <img id="clique-nav" class="active-nav" src="assets/cursor_24p.png" onclick="navigate('clique')">
+        <img id="dessine-nav" src="assets/pencil_24p.png" onclick="navigate('dessine')">
     </div>
     <a id="acknowledgements" href="https://github.com/FeelDee/cliquemonsieur">créé par Félix Brun et Philippe Ducas</a>
 </body>
