@@ -1,7 +1,6 @@
 const canvas = document.getElementById('dessine-canvas');
 const ctx = canvas.getContext('2d');
 
-const ZOOM_FACTOR = 3;
 const CANVAS_WIDTH = 200;
 const CANVAS_HEIGHT = 200;
 
@@ -195,15 +194,21 @@ function changeTool(tool) {
     currentTool = tool;
 }
 
+let zoomFactor = window.innerWidth > 780 ? 3 : 1;
+
+addEventListener('resize', () => {
+    zoomFactor = window.innerWidth > 780 ? 3 : 1;
+})
+
 canvas.addEventListener('mousedown', (ev) => {
-    const x = Math.floor(ev.offsetX / ZOOM_FACTOR);
-    const y = Math.floor(ev.offsetY / ZOOM_FACTOR);
+    const x = Math.floor(ev.offsetX / zoomFactor);
+    const y = Math.floor(ev.offsetY / zoomFactor);
     tools[currentTool].mousedown(x, y);
 });
 
 canvas.addEventListener('mousemove', (ev) => {
-    const x = Math.floor(ev.offsetX / ZOOM_FACTOR);
-    const y = Math.floor(ev.offsetY / ZOOM_FACTOR);
+    const x = Math.floor(ev.offsetX / zoomFactor);
+    const y = Math.floor(ev.offsetY / zoomFactor);
     tools[currentTool].mousemove(x, y);
 });
 

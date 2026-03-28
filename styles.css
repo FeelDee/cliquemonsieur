@@ -162,13 +162,39 @@ img {
     100% { transform: translate(0); }
 }
 
+/* SMARTPHONE */
+
 @media (max-width: 780px) {
-    #compte-monsieur {
+    #menu {
+        padding: 3px;
+        border-radius: 0 10px 10px 0;
+
+        img {
+            padding: 3px;
+            margin: 3px;
+            width: 24px;
+            height: 24px;
+            border-radius: 5px;
+        }
+    }
+
+    #compte-monsieur, #dessine-monsieur-description {
         font-size: 20px;
     }
 
-    #dessine-monsieur {
+    #dessine-canvas {
         width: 200px;
         height: 200px;
+    }
+
+    #dessine-tools {
+        transform: translate(202px, 0);
+    }
+}
+
+@media (max-width: 350px) {
+    #dessine-tools {
+        flex-direction: row;
+        transform: translate(0, 202px);
     }
 }
