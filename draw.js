@@ -228,34 +228,37 @@ canvas.addEventListener('mouseleave', (ev) => {
     tools[currentTool].mouseleave(x, y);
 });
 
+function getCanvasTouchCoordinates(touch) {
+    return {
+        x: Math.floor((touch.clientX - touch.target.offsetLeft) / zoomFactor),
+        y: Math.floor((touch.clientY - touch.target.offsetTop) / zoomFactor)
+    };
+}
+
 canvas.addEventListener('touchstart', (ev) => {
     if (ev.targetTouches.length != 1) return;
     ev.preventDefault();
-    const x = Math.floor(ev.targetTouches[0].offsetX / zoomFactor);
-    const y = Math.floor(ev.targetTouches[0].offsetY / zoomFactor);
-    tools[currentTool].mousemove(x, y);
+    const { x, y } = getCanvasTouchCoordinates(ev.targetTouches[0]);
+    tools[currentTool].mousedown(x, y);
 });
 
 canvas.addEventListener('touchmove', (ev) => {
     if (ev.targetTouches.length != 1) return;
     ev.preventDefault();
-    const x = Math.floor(ev.targetTouches[0].offsetX / zoomFactor);
-    const y = Math.floor(ev.targetTouches[0].offsetY / zoomFactor);
+    const { x, y } = getCanvasTouchCoordinates(ev.targetTouches[0]);
     tools[currentTool].mousemove(x, y);
 });
 
 canvas.addEventListener('touchend', (ev) => {
     if (ev.targetTouches.length != 1) return;
     ev.preventDefault();
-    const x = Math.floor(ev.targetTouches[0].offsetX / zoomFactor);
-    const y = Math.floor(ev.targetTouches[0].offsetY / zoomFactor);
+    const { x, y } = getCanvasTouchCoordinates(ev.targetTouches[0]);
     tools[currentTool].mouseup(x, y);
 });
 
 canvas.addEventListener('touchcancel', (ev) => {
     if (ev.targetTouches.length != 1) return;
     ev.preventDefault();
-    const x = Math.floor(ev.targetTouches[0].offsetX / zoomFactor);
-    const y = Math.floor(ev.targetTouches[0].offsetY / zoomFactor);
+    const { x, y } = getCanvasTouchCoordinates(ev.targetTouches[0]);
     tools[currentTool].mouseleave(x, y);
 });
