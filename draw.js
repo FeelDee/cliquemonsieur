@@ -1,5 +1,7 @@
 const canvas = document.getElementById('dessine-canvas');
-const ctx = canvas.getContext('2d');
+const ctx = canvas.getContext('2d', {
+    willReadFrequently: true, // optimization for getImageData
+});
 
 const CANVAS_WIDTH = 200;
 const CANVAS_HEIGHT = 200;
@@ -14,7 +16,7 @@ function changeColor() {
 // initialize color
 changeColor();
 
-/* PEN TOOL FUNCTIONS*/
+/* PEN TOOL FUNCTIONS */
 
 const pixelsToDraw = [];
 
