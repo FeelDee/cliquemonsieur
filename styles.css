@@ -123,8 +123,11 @@ img {
         padding: 5px;
     }
 
-    .dessine-tool {
+    .dessine-tool, .dessine-tool-disabled {
         padding: 3px;
+    }
+
+    .dessine-tool {
         cursor: pointer;
     }
 
@@ -138,6 +141,11 @@ img {
 
     .active-tool {
         background-color: #444;
+    }
+
+    .dessine-tool-disabled {
+        opacity: 0.25;
+        pointer-events: none;
     }
 }
 

@@ -18,6 +18,19 @@ changeColor();
 
 /* UNDO / REDO */
 
+function enableDessineTool(tool) {
+    tool.classList.remove('dessine-tool-disabled');
+    tool.classList.add('dessine-tool');
+}
+
+function disableDessineTool(tool) {
+    tool.classList.remove('dessine-tool');
+    tool.classList.add('dessine-tool-disabled');
+}
+
+const undoButton = document.getElementById('undo-button');
+const redoButton = document.getElementById('redo-button');
+
 let previousCaptures = [];
 let nextCaptures = [];
 const MAX_CAPTURES = 50;
@@ -26,7 +39,15 @@ const MAX_CAPTURES = 50;
  * To be called by other functions whenever a drawing action has been completed.
  */
 function captureCanvas() {
-    nextCaptures = [];
+    if (nextCaptures.length > 0) {
+        disableDessineTool(redoButton);
+        nextCaptures = [];
+    }
+
+    if (previousCaptures.length == 1) {
+        // enable undo button only if previousCaptures is empty except for current state
+        enableDessineTool(undoButton);
+    }
 
     canvas.toBlob((blob) => {
         previousCaptures.push(blob);
@@ -53,6 +74,14 @@ function undoCanvas() {
 
     nextCaptures.push(previousCaptures.pop());
     drawCanvasFromBlob(previousCaptures[previousCaptures.length - 1]);
+
+    if (previousCaptures.length == 1) {
+        disableDessineTool(undoButton);
+    }
+
+    if (nextCaptures.length == 1) {
+        enableDessineTool(redoButton);
+    }
 }
 
 function redoCanvas() {
@@ -61,6 +90,14 @@ function redoCanvas() {
     const blob = nextCaptures.pop();
     previousCaptures.push(blob);
     drawCanvasFromBlob(blob);
+
+    if (previousCaptures.length == 2) {
+        enableDessineTool(undoButton);
+    }
+
+    if (nextCaptures.length == 0) {
+        disableDessineTool(redoButton);
+    }
 }
 
 /* PEN TOOL FUNCTIONS */
