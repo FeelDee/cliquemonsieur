@@ -344,16 +344,12 @@ canvas.addEventListener('touchmove', (ev) => {
 });
 
 canvas.addEventListener('touchend', (ev) => {
-    if (ev.targetTouches.length != 1) return;
-    ev.preventDefault();
-    const { x, y } = getCanvasTouchCoordinates(ev.targetTouches[0]);
+    const { x, y } = getCanvasTouchCoordinates(ev.changedTouches[0]);
     tools[currentTool].mouseup(x, y);
 });
 
 canvas.addEventListener('touchcancel', (ev) => {
-    if (ev.targetTouches.length != 1) return;
-    ev.preventDefault();
-    const { x, y } = getCanvasTouchCoordinates(ev.targetTouches[0]);
+    const { x, y } = getCanvasTouchCoordinates(ev.changedTouches[0]);
     tools[currentTool].mouseleave(x, y);
 });
 
