@@ -3,8 +3,8 @@ const ctx = canvas.getContext('2d', {
     willReadFrequently: true, // optimization for getImageData
 });
 
-const CANVAS_WIDTH = 200;
-const CANVAS_HEIGHT = 200;
+const CANVAS_WIDTH = ctx.canvas.width;
+const CANVAS_HEIGHT = ctx.canvas.height;
 
 /* COLOR PICKER */
 
@@ -15,6 +15,53 @@ function changeColor() {
 
 // initialize color
 changeColor();
+
+/* UNDO / REDO */
+
+let previousCaptures = [];
+let nextCaptures = [];
+const MAX_CAPTURES = 50;
+
+/**
+ * To be called by other functions whenever a drawing action has been completed.
+ */
+function captureCanvas() {
+    nextCaptures = [];
+
+    canvas.toBlob((blob) => {
+        previousCaptures.push(blob);
+        if (previousCaptures.length > MAX_CAPTURES) {
+            previousCaptures.shift();
+        }
+    });
+}
+
+// initialize previous captures with initial canvas
+captureCanvas();
+
+function drawCanvasFromBlob(blob) {
+    const img = new Image();
+    img.onload = () => {
+        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        ctx.drawImage(img, 0, 0);
+    };
+    img.src = URL.createObjectURL(blob);
+}
+
+function undoCanvas() {
+    if (previousCaptures.length < 2) return; // last element is current state
+
+    nextCaptures.push(previousCaptures.pop());
+    drawCanvasFromBlob(previousCaptures[previousCaptures.length - 1]);
+}
+
+function redoCanvas() {
+    if (nextCaptures.length == 0) return;
+
+    const blob = nextCaptures.pop();
+    previousCaptures.push(blob);
+    drawCanvasFromBlob(blob);
+}
 
 /* PEN TOOL FUNCTIONS */
 
@@ -105,12 +152,16 @@ function startDrawing() {
 }
 
 function stopDrawing() {
+    if (!isDrawing) return;
+
     isDrawing = false;
     clearInterval(drawFunctionIntervalId);
     drawFunctionIntervalId = -1;
 
     // draw remaining pixels
     draw();
+
+    captureCanvas();
 }
 
 /* BUCKET TOOL FUNCTIONS */
@@ -126,7 +177,7 @@ function getPixelNeighbors({ x, y }) {
     if (x > 0) neighbors.push({ x: x - 1, y });
     if (y > 0) neighbors.push({ x, y: y - 1 });
     if (x < CANVAS_WIDTH) neighbors.push({ x: x + 1, y });
-    if (y < CANVAS_HEIGHT) neighbors.push({ x, y: y + 1});
+    if (y < CANVAS_HEIGHT) neighbors.push({ x, y: y + 1 });
     return neighbors;
 }
 
@@ -144,7 +195,7 @@ function fill(x, y) {
     while (neighbors.length > 0) {
         const pixel = neighbors.shift();
         ctx.fillRect(pixel.x, pixel.y, 1, 1); // could be optimized with putImageData
-        
+
         for (const neighbor of getPixelNeighbors(pixel)) {
             const hash = stringifyPixel(neighbor);
             if (visited.has(hash)) continue;
@@ -155,11 +206,13 @@ function fill(x, y) {
             }
         }
     }
+
+    captureCanvas();
 }
 
 let line = { lastX: 0, lastY: 0 }
 
-function noop() {}
+function noop() { }
 
 let tools = {
     pen: {
@@ -204,7 +257,7 @@ addEventListener('resize', () => {
     zoomFactor = window.innerWidth > 780 ? 3 : 1;
 })
 
-/* CANVAS EVENTS MAPPING */
+/* CANVAS MOUSE EVENTS MAPPING */
 
 canvas.addEventListener('mousedown', (ev) => {
     const x = Math.floor(ev.offsetX / zoomFactor);
@@ -229,6 +282,8 @@ canvas.addEventListener('mouseleave', (ev) => {
     const y = Math.floor(ev.offsetY / zoomFactor);
     tools[currentTool].mouseleave(x, y);
 });
+
+/* CANVAS TOUCH EVENTS MAPPING */
 
 function getCanvasTouchCoordinates(touch) {
     return {
@@ -263,4 +318,28 @@ canvas.addEventListener('touchcancel', (ev) => {
     ev.preventDefault();
     const { x, y } = getCanvasTouchCoordinates(ev.targetTouches[0]);
     tools[currentTool].mouseleave(x, y);
+});
+
+/* KEY BINDINGS */
+
+document.addEventListener('keydown', (event) => {
+    const key = event.key.toLowerCase();
+
+    const isUndo = (event.ctrlKey || event.metaKey) && key === 'z' && !event.shiftKey;
+
+    if (isUndo) {
+        event.preventDefault();
+        undoCanvas();
+        return;
+    }
+
+    const isRedo =
+        (event.ctrlKey || event.metaKey) &&
+        (key === 'y' || (key === 'z' && event.shiftKey));
+
+    if (isRedo) {
+        event.preventDefault();
+        redoCanvas();
+        return;
+    }
 });
