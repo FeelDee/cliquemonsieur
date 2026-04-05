@@ -323,9 +323,11 @@ canvas.addEventListener('mouseleave', (ev) => {
 /* CANVAS TOUCH EVENTS MAPPING */
 
 function getCanvasTouchCoordinates(touch) {
+    const rect = touch.target.getBoundingClientRect();
+
     return {
-        x: Math.floor((touch.clientX - touch.target.offsetLeft) / zoomFactor),
-        y: Math.floor((touch.clientY - touch.target.offsetTop) / zoomFactor)
+        x: Math.floor((touch.clientX - rect.left) / zoomFactor),
+        y: Math.floor((touch.clientY - rect.top) / zoomFactor)
     };
 }
 
