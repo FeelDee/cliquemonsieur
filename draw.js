@@ -19,13 +19,11 @@ changeColor();
 /* UNDO / REDO */
 
 function enableDessineTool(tool) {
-    tool.classList.remove('dessine-tool-disabled');
-    tool.classList.add('dessine-tool');
+    tool.classList.remove('disabled');
 }
 
 function disableDessineTool(tool) {
-    tool.classList.remove('dessine-tool');
-    tool.classList.add('dessine-tool-disabled');
+    tool.classList.add('disabled');
 }
 
 const undoButton = document.getElementById('undo-button');
@@ -98,6 +96,12 @@ function redoCanvas() {
     if (nextCaptures.length == 0) {
         disableDessineTool(redoButton);
     }
+}
+
+/* SAVE */
+
+function openSaveModal() {
+    console.log('open modal');
 }
 
 /* PEN TOOL FUNCTIONS */
@@ -282,8 +286,8 @@ let currentTool = 'pen';
 function changeTool(tool) {
     if (tool == currentTool) return;
 
-    document.getElementById(`${currentTool}-tool`).classList.remove('active-tool');
-    document.getElementById(`${tool}-tool`).classList.add('active-tool');
+    document.getElementById(`${currentTool}-tool`).classList.remove('active');
+    document.getElementById(`${tool}-tool`).classList.add('active');
 
     currentTool = tool;
 }
@@ -375,6 +379,14 @@ document.addEventListener('keydown', (event) => {
     if (isRedo) {
         event.preventDefault();
         redoCanvas();
+        return;
+    }
+
+    const isSave = (event.ctrlKey || event.metaKey) && key === 's' && !event.shiftKey;
+
+    if (isSave) {
+        event.preventDefault();
+        openSaveModal();
         return;
     }
 });

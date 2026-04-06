@@ -22,15 +22,15 @@
             <canvas id="dessine-canvas" width="200" height="200"></canvas>
             <div id="dessine-tools">
                 <div id="main-tools">
-                    <img id="pen-tool" class="dessine-tool active-tool" src="assets/pencil_24p.png" onclick="changeTool('pen')">
+                    <img id="pen-tool" class="dessine-tool active" src="assets/pencil_24p.png" onclick="changeTool('pen')">
                     <img id="bucket-tool" class="dessine-tool" src="assets/bucket_24p.png" onclick="changeTool('bucket')">
                 </div>
                 <div id="color">
                     <input type="color" id="color-picker-input" oninput="changeColor()">
                 </div>
                 <div>
-                    <img id="undo-button" class="dessine-tool-disabled" src="assets/undo.png" onclick="undoCanvas()">
-                    <img id="redo-button" class="dessine-tool-disabled" src="assets/redo.png" onclick="redoCanvas()">
+                    <img id="undo-button" class="dessine-tool disabled" src="assets/undo.png" onclick="undoCanvas()">
+                    <img id="redo-button" class="dessine-tool disabled" src="assets/redo.png" onclick="redoCanvas()">
                 </div>
             </div>
         </div>
