@@ -11,6 +11,15 @@ function onLoad() {
     });
 }
 
+function cliqueTitle() {
+    document.getElementById('clique-page').removeEventListener('click', cliqueTitle);
+    document.getElementById('title').classList.add('hidden');
+    cliqueMonsieur();
+    document.getElementById('monsieur').classList.remove('hidden');
+}
+
+document.getElementById('clique-page').addEventListener('click', cliqueTitle);
+
 let lastRange;
 
 function cliqueMonsieur() {

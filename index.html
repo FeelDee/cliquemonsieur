@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/x-icon" href="assets/cursor.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -14,7 +17,8 @@
     <script src="draw.js" defer></script>
     <script src="script.js" defer></script>
     <div id="clique-page" class="page">
-        <img id="monsieur" src="assets/title.png" alt="Monsieur" onclick="cliqueMonsieur()">
+        <p id="title">clique monsieur</p>
+        <img id="monsieur" class="hidden" onclick="cliqueMonsieur()">
         <p id="compte-monsieur"></p>
     </div>
     <div id="dessine-page" class="page hidden">
