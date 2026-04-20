@@ -13,8 +13,11 @@
 </head>
 
 <body>
+    <script src="observable.js" defer></script>
+    <script src="storage.js" defer></script>
     <script src="list.js" defer></script>
     <script src="draw.js" defer></script>
+    <script src="gallery.js" defer></script>
     <script src="main.js" defer></script>
     <div id="clique-page" class="page">
         <p id="title">clique monsieur</p>
@@ -40,9 +43,13 @@
         </div>
         <p id="dessine-monsieur-description">Dessine Monsieur</p>
     </div>
+    <div id="gallery-page" class="page hidden">
+        <div id="gallery-list"></div>
+    </div>
     <div id="menu">
         <img id="clique-nav" class="active-nav" src="assets/cursor_24p.png" onclick="navigate('clique')">
         <img id="dessine-nav" src="assets/pencil_24p.png" onclick="navigate('dessine')">
+        <img id="gallery-nav" src="assets/folder.png" onclick="navigate('gallery')">
     </div>
     <a id="acknowledgements" href="https://github.com/FeelDee/cliquemonsieur">créé par Félix Brun et Philippe Ducas</a>
 </body>

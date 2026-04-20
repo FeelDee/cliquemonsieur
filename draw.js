@@ -102,6 +102,12 @@ function redoCanvas() {
 
 function openSaveModal() {
     console.log('open modal');
+    storageSaveMonsieur({
+        name: 'test test monsieur',
+        author: 'moi',
+        timestamp: Date.now(),
+        blob: previousCaptures[previousCaptures.length - 1]
+    }).then(() => console.log('monsieur save ok'));
 }
 
 /* PEN TOOL FUNCTIONS */

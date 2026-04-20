@@ -1,4 +1,3 @@
-let monsieursCount = 0;
 let totalOccurrences = 0;
 
 function onLoad() {
@@ -22,9 +21,11 @@ document.getElementById('clique-page').addEventListener('click', cliqueTitle);
 
 let lastRange;
 
+const monsieursCount = new StorageObject('monsieursCount', 0);
+
 function cliqueMonsieur() {
-    monsieursCount += 1;
-    document.getElementById('compte-monsieur').innerText = 'Nombre de Monsieurs: ' + monsieursCount;
+    monsieursCount.value += 1;
+    document.getElementById('compte-monsieur').innerText = 'Nombre de Monsieurs: ' + monsieursCount.value;
 
     shake();
 

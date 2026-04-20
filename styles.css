@@ -164,6 +164,33 @@ img {
     text-align: center;
 }
 
+/* GALLERY PAGE */
+
+#gallery-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 80vw;
+    height: 100%;
+    overflow-y: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+gallery-card {
+    width: 500px;
+    height: 200px;
+    border: 5px solid #f4f4f4;
+
+    img {
+        width: 200px;
+        height: 200px;
+        float: left;
+    }
+}
+
 /* ANIMATIONS */
 
 .shake {
