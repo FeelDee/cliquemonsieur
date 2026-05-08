@@ -48,17 +48,17 @@ async function storageGetAllMonsieurs() {
     })
 }
 
-async function storageSaveMonsieur({ name, author, timestamp, blob }) {
+async function storageSaveMonsieur({ name, occurrences, timestamp, blob }) {
     const db = await getDB();
     const tx = db.transaction('monsieurs', 'readwrite');
     const store = tx.objectStore('monsieurs');
 
-    store.put({ name, author, timestamp, blob }, name);
+    store.put({ name, occurrences, timestamp, blob }, name);
 
     return new Promise((resolve, reject) => {
         tx.oncomplete = () => {
             resolve();
-            onMonsieurSave.next({ name, author, timestamp, blob });
+            onMonsieurSave.next({ name, occurrences, timestamp, blob });
         }
         tx.onerror = reject;
     });

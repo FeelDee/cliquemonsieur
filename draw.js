@@ -100,15 +100,28 @@ function redoCanvas() {
 
 /* SAVE */
 
+const saveDialog = document.getElementById('save-dialog');
+const saveDialogImg = document.getElementById('save-dialog-img');
+const saveForm = document.getElementById('lalala') // saveDialog.querySelector('form');
+
 function openSaveModal() {
-    console.log('open modal');
+    const blob = previousCaptures[previousCaptures.length - 1];
+    saveDialogImg.src = URL.createObjectURL(blob);
+    saveDialog.showModal();
+}
+
+saveDialog.addEventListener('close', () => {
+    if (saveDialog.returnValue !== 'submit') return;
+
+    const formdata = new FormData(saveForm).entries();
+    const data = Object.fromEntries(formdata);
     storageSaveMonsieur({
-        name: 'test test monsieur',
-        author: 'moi',
+        name: data.name,
+        occurrences: data.occurrences,
         timestamp: Date.now(),
         blob: previousCaptures[previousCaptures.length - 1]
-    }).then(() => console.log('monsieur save ok'));
-}
+    })
+});
 
 /* PEN TOOL FUNCTIONS */
 
@@ -368,6 +381,8 @@ canvas.addEventListener('touchcancel', (ev) => {
 /* KEY BINDINGS */
 
 document.addEventListener('keydown', (event) => {
+    if (currentPage != 'dessine') return;
+
     const key = event.key.toLowerCase();
 
     const isUndo = (event.ctrlKey || event.metaKey) && key === 'z' && !event.shiftKey;
