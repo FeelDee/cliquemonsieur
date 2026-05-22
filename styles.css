@@ -34,6 +34,28 @@ img {
     display: none;
 }
 
+.icon-button {
+    border: none;
+    padding: 0;
+    cursor: pointer;
+
+    background: url("assets/button-background-normal-32px.png") no-repeat center;
+    background-size: 100% 100%;
+    image-rendering: pixelated;
+}
+
+.icon-button.active, .icon-button:active {
+    background: url("assets/button-background-pressed-32px.png") no-repeat center;
+    background-size: 100% 100%;
+    image-rendering: pixelated;
+}
+
+.icon-button:disabled {
+    pointer-events: none;
+    cursor: auto;
+    opacity: 0.25;
+}
+
 /* ELEMENTS FIXES */
 
 #menu {
@@ -41,30 +63,18 @@ img {
     top: 10vh;
     left: 0;
     padding: 5px;
-    background-color: #222;
-    border-radius: 0 20px 20px 0;
+    background-color: #777;
     display: flex;
     flex-direction: column;
 
+    .icon-button {
+        width: 64px;
+        height: 64px;
+    }
+
     img {
-        padding: 5px;
-        margin: 5px;
         width: 48px;
         height: 48px;
-        cursor: pointer;
-        border-radius: 10px;
-    }
-
-    img:hover {
-        background-color: #555;
-    }
-
-    img:active {
-        background-color: #777;
-    }
-
-    .active-nav {
-        background-color: #444;
     }
 }
 
@@ -121,41 +131,33 @@ img {
     background-image: url("assets/background.png");
 }
 
-#dessine-tools {
+#dessine-tools, #utility-tools {
+    padding: 5px;
+    background-color: #777;
     display: flex;
-    flex-direction: column;
     position: absolute;
-    transform: translate(602px, 0);
+
+    .icon-button, #color-picker-input {
+        width: 32px;
+        height: 32px;
+    }
+
+    .icon-button img {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+#dessine-tools {
+    flex-direction: column;
+    transform: translate(-42px, 0);
     transform-origin: 0 0;
-    font-family: Arial, Helvetica, sans-serif;
+}
 
-    div {
-        background-color: #333;
-        padding: 5px;
-    }
-
-    .dessine-tool {
-        padding: 3px;
-        cursor: pointer;
-    }
-
-    .dessine-tool:hover {
-        background-color: #555;
-    }
-
-    .dessine-tool:active {
-        background-color: #777;
-    }
-
-    .dessine-tool.active {
-        background-color: #444;
-    }
-
-    .dessine-tool.disabled {
-        opacity: 0.25;
-        pointer-events: none;
-        cursor: auto;
-    }
+#utility-tools {
+    flex-direction: row;
+    transform: translate(0, -42px);
+    transform-origin: 0 0;
 }
 
 #dessine-monsieur-description {
@@ -182,14 +184,18 @@ img {
 }
 
 gallery-card {
-    width: 500px;
-    height: 200px;
-    border: 5px solid #f4f4f4;
+    width: 512px;
+    height: 224px;
+    background: url("assets/gallery-card-background.png") no-repeat center;
+    background-size: 100% 100%;
+    image-rendering: pixelated;
+    margin: 10px;
 
     img {
         width: 200px;
         height: 200px;
         float: left;
+        margin: 12px;
     }
 }
 
@@ -212,14 +218,15 @@ gallery-card {
 @media (max-width: 780px) {
     #menu {
         padding: 3px;
-        border-radius: 0 10px 10px 0;
+
+        button {
+            width: 32px;
+            height: 32px;
+        }
 
         img {
-            padding: 3px;
-            margin: 3px;
             width: 24px;
             height: 24px;
-            border-radius: 5px;
         }
     }
 

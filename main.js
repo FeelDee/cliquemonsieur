@@ -73,8 +73,8 @@ let currentPage = 'clique';
 function navigate(page) {
     if (page == currentPage) return;
 
-    document.getElementById(`${currentPage}-nav`).classList.remove('active-nav');
-    document.getElementById(`${page}-nav`).classList.add('active-nav');
+    document.getElementById(`${currentPage}-nav`).classList.remove('active');
+    document.getElementById(`${page}-nav`).classList.add('active');
 
     document.getElementById(`${currentPage}-page`).classList.add('hidden');
     document.getElementById(`${page}-page`).classList.remove('hidden');

@@ -19,11 +19,11 @@ changeColor();
 /* UNDO / REDO */
 
 function enableDessineTool(tool) {
-    tool.classList.remove('disabled');
+    tool.disabled = false;
 }
 
 function disableDessineTool(tool) {
-    tool.classList.add('disabled');
+    tool.disabled = true;
 }
 
 const undoButton = document.getElementById('undo-button');
@@ -102,7 +102,7 @@ function redoCanvas() {
 
 const saveDialog = document.getElementById('save-dialog');
 const saveDialogImg = document.getElementById('save-dialog-img');
-const saveForm = document.getElementById('lalala') // saveDialog.querySelector('form');
+const saveForm = saveDialog.querySelector('form');
 
 function openSaveModal() {
     const blob = previousCaptures[previousCaptures.length - 1];
