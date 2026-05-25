@@ -246,14 +246,18 @@ gallery-card {
 /* SMARTPHONE */
 
 @media (max-width: 780px) {
+    body {
+        font-size: 8px;
+    }
+
     #menu {
         padding: 3px;
 
-        button {
+        .icon-button {
             width: 32px;
             height: 32px;
         }
-
+    
         img {
             width: 24px;
             height: 24px;
@@ -273,8 +277,36 @@ gallery-card {
         height: 200px;
     }
 
-    #dessine-tools {
-        transform: translate(202px, 0);
+    gallery-card {
+        width: 256px;
+        height: 112px;
+        margin: 5px;
+    
+        .icon-button {
+            width: 32px;
+            height: 32px;
+    
+            img {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    
+        #gallery-card-image {
+            width: 100px;
+            height: 100px;
+            margin: 6px;
+            image-rendering: auto;
+        }
+    
+        #gallery-card-properties {
+            margin-top: 6px;
+            margin-bottom: 6px;
+        }
+    
+        #gallery-card-buttons {
+            bottom: 12px;
+        }
     }
 }
 
