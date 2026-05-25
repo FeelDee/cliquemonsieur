@@ -175,12 +175,12 @@ img {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    align-content: center;
+    align-content: safe center;
     width: 80vw;
     height: 100%;
     overflow-y: auto;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    scrollbar-width: none;
+    gap: 20px;
 }
 
 gallery-card {
@@ -189,7 +189,6 @@ gallery-card {
     background: url("assets/gallery-card-background.png") no-repeat center;
     background-size: 100% 100%;
     image-rendering: pixelated;
-    margin: 10px;
     display: flex;
     flex-direction: row;
 
@@ -277,10 +276,13 @@ gallery-card {
         height: 200px;
     }
 
+    #gallery-list {
+        gap: 10px;
+    }
+
     gallery-card {
         width: 256px;
         height: 112px;
-        margin: 5px;
     
         .icon-button {
             width: 32px;
