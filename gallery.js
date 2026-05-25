@@ -8,24 +8,39 @@ class GalleryCard extends HTMLElement {
         img.src = this.getAttribute('imageSrc');
 
         const name = this.querySelector('#gallery-card-name');
-        name.innerHTML = this.getAttribute('name');
+        this.name = this.getAttribute('name');
+        name.innerHTML = this.name;
 
         const occurrences = this.querySelector('#gallery-card-occurrences');
         occurrences.innerHTML = this.getAttribute('occurrences');
 
         const editButton = this.querySelector('#gallery-card-edit');
         editButton.onclick = async () => {
-            const monsieur = await storageGetMonsieur(this.getAttribute('name'));
+            const monsieur = await storageGetMonsieur(this.name);
             await canvasLoadMonsieur(monsieur);
             navigate('dessine');
         }
 
         const deleteButton = this.querySelector('#gallery-card-delete');
-        deleteButton.onclick = () => storageDeleteMonsieur(this.getAttribute('name'));
+        deleteButton.onclick = this.confirmDeletion.bind(this);
 
         const downloadLink = this.querySelector('#gallery-card-download');
         downloadLink.href = this.getAttribute('imageSrc');
         downloadLink.download = this.getAttribute('name') + '.png';
+    }
+
+    confirmDeletion() {
+        const confirmDialog = document.getElementById('confirm-deletion-dialog');
+
+        confirmDialog.addEventListener('close', () => {
+            if (confirmDialog.returnValue !== 'submit') return;
+            storageDeleteMonsieur(this.name);
+        }, { once: true });
+        
+        const p = document.getElementById('confirm-deletion-dialog-text');
+        p.innerHTML = `Supprimer ${this.name}?`;
+
+        confirmDialog.showModal();
     }
 }
 
@@ -35,7 +50,7 @@ const galleryList = document.getElementById('gallery-list');
 
 function galleryCreateCard({ name, occurrences, timestamp, blob }) {
     const el = document.createElement('gallery-card');
-    
+
     el.setAttribute('name', name);
     el.setAttribute('occurrences', occurrences);
     el.setAttribute('imageSrc', URL.createObjectURL(blob));

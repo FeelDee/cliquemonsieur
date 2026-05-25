@@ -120,7 +120,7 @@ saveDialog.addEventListener('close', () => {
         occurrences: data.occurrences,
         timestamp: Date.now(),
         blob: previousCaptures[previousCaptures.length - 1]
-    })
+    });
 });
 
 /**
