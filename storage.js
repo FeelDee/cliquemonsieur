@@ -34,6 +34,20 @@ function getDB() {
 }
 
 const onMonsieurSave = new Observable();
+const onMonsieurDelete = new Observable();
+
+async function storageGetMonsieur(name) {
+    const db = await getDB();
+    const tx = db.transaction('monsieurs', 'readonly');
+    const store = tx.objectStore('monsieurs');
+
+    const request = store.get(name);
+
+    return new Promise((resolve, reject) => {
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error)
+    })
+}
 
 async function storageGetAllMonsieurs() {
     const db = await getDB();
@@ -59,7 +73,7 @@ async function storageSaveMonsieur({ name, occurrences, timestamp, blob }) {
         tx.oncomplete = () => {
             resolve();
             onMonsieurSave.next({ name, occurrences, timestamp, blob });
-        }
+        };
         tx.onerror = reject;
     });
 }
@@ -72,7 +86,10 @@ async function storageDeleteMonsieur(name) {
     store.delete(name);
 
     return new Promise((resolve, reject) => {
-        tx.oncomplete = resolve;
+        tx.oncomplete = () => {
+            resolve();
+            onMonsieurDelete.next(name);
+        };
         tx.onerror = reject;
     })
 }

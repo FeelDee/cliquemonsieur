@@ -190,12 +190,42 @@ gallery-card {
     background-size: 100% 100%;
     image-rendering: pixelated;
     margin: 10px;
+    display: flex;
+    flex-direction: row;
 
-    img {
+    .icon-button {
+        width: 64px;
+        height: 64px;
+
+        img {
+            width: 48px;
+            height: 48px;
+        }
+    }
+
+    #gallery-card-image {
         width: 200px;
         height: 200px;
-        float: left;
         margin: 12px;
+    }
+
+    #gallery-card-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    #gallery-card-properties {
+        margin-top: 12px;
+        margin-bottom: 12px;
+        overflow-y: hidden;
+    }
+
+    #gallery-card-buttons {
+        position: absolute;
+        bottom: 24px;
+        display: flex;
+        flex-direction: row;
     }
 }
 

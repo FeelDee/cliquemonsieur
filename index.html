@@ -55,13 +55,13 @@
                 <p>
                     <label>
                         Nom du monsieur :
-                        <input name="name" value="mon magnifique monsieur">
+                        <input id="save-dialog-name-input" name="name" value="mon magnifique monsieur">
                     </label>
                 </p>
                 <p>
                     <label>
                         Occurences :</span>
-                        <input name="occurrences" type="number" min="0" value="10">
+                        <input id="save-dialog-occurrences-input" name="occurrences" type="number" min="0" value="10">
                     </label>
                 </p>
                 <button value="submit">Sauvegarder</button>
@@ -80,5 +80,22 @@
     </div>
     <a id="acknowledgements" href="https://github.com/FeelDee/cliquemonsieur">créé par Félix Brun et Philippe Ducas</a>
 </body>
+
+<template id="gallery-card-template">
+    <img id="gallery-card-image"/>
+    <div id="gallery-card-content">
+        <div id="gallery-card-properties">
+            <p id="gallery-card-name"></p>
+            <p id="gallery-card-occurrences"></p>
+        </div>
+        <div id="gallery-card-buttons">
+            <button id="gallery-card-edit" class="icon-button"><img src="assets/pencil.png"></button>
+            <a id="gallery-card-download">
+                <button class="icon-button"><img src="assets/download.png"></button>
+            </a>
+            <button id="gallery-card-delete" class="icon-button"><img src="assets/dustbin.png"></button>
+        </div>
+    </div>
+</template>
 
 </html>

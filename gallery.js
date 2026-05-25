@@ -1,37 +1,65 @@
 class GalleryCard extends HTMLElement {
     connectedCallback() {
-        const img = document.createElement('img');
+        let template = document.getElementById('gallery-card-template');
+        let templateContent = template.content;
+        this.appendChild(document.importNode(templateContent, true));
+
+        const img = this.querySelector('#gallery-card-image');
         img.src = this.getAttribute('imageSrc');
-        this.appendChild(img);
 
-        const name = document.createElement('p');
+        const name = this.querySelector('#gallery-card-name');
         name.innerHTML = this.getAttribute('name');
-        this.appendChild(name);
 
-        const occurrences = document.createElement('p');
+        const occurrences = this.querySelector('#gallery-card-occurrences');
         occurrences.innerHTML = this.getAttribute('occurrences');
-        this.appendChild(occurrences);
+
+        const editButton = this.querySelector('#gallery-card-edit');
+        editButton.onclick = async () => {
+            const monsieur = await storageGetMonsieur(this.getAttribute('name'));
+            await canvasLoadMonsieur(monsieur);
+            navigate('dessine');
+        }
+
+        const deleteButton = this.querySelector('#gallery-card-delete');
+        deleteButton.onclick = () => storageDeleteMonsieur(this.getAttribute('name'));
+
+        const downloadLink = this.querySelector('#gallery-card-download');
+        downloadLink.href = this.getAttribute('imageSrc');
+        downloadLink.download = this.getAttribute('name') + '.png';
     }
 }
 
 customElements.define("gallery-card", GalleryCard);
 
-const galleryList = document.getElementById("gallery-list");
+const galleryList = document.getElementById('gallery-list');
 
 function galleryCreateCard({ name, occurrences, timestamp, blob }) {
-    const el = document.createElement("gallery-card");
+    const el = document.createElement('gallery-card');
     
-    el.setAttribute("name", name);
-    el.setAttribute("occurrences", occurrences);
-    el.setAttribute("imageSrc", URL.createObjectURL(blob));
+    el.setAttribute('name', name);
+    el.setAttribute('occurrences', occurrences);
+    el.setAttribute('imageSrc', URL.createObjectURL(blob));
     galleryList.appendChild(el);
 }
+
+function galleryRemoveCard(name) {
+    const card = galleryList.querySelector(`[name="${name}"]`);
+    if (!card) return;
+    card.remove();
+}
+
+onMonsieurSave.subscribe((monsieur) => {
+    galleryRemoveCard(monsieur.name);
+    galleryCreateCard(monsieur)
+});
+
+onMonsieurDelete.subscribe(galleryRemoveCard);
+
+/* INIT */
 
 async function galleryInit() {
     const monsieurs = await storageGetAllMonsieurs();
     monsieurs.forEach(galleryCreateCard);
 }
 
-onMonsieurSave.subscribe(galleryCreateCard);
-
-galleryInit().then(() => console.log('gallery init successful'));
+galleryInit();

@@ -55,16 +55,16 @@ function captureCanvas() {
     });
 }
 
-// initialize previous captures with initial canvas
-captureCanvas();
-
-function drawCanvasFromBlob(blob) {
+async function drawCanvasFromBlob(blob) {
     const img = new Image();
-    img.onload = () => {
-        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        ctx.drawImage(img, 0, 0);
-    };
-    img.src = URL.createObjectURL(blob);
+    return new Promise((resolve, reject) => {
+        img.onload = () => {
+            ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            ctx.drawImage(img, 0, 0);
+            resolve();
+        };
+        img.src = URL.createObjectURL(blob);
+    });
 }
 
 function undoCanvas() {
@@ -122,6 +122,17 @@ saveDialog.addEventListener('close', () => {
         blob: previousCaptures[previousCaptures.length - 1]
     })
 });
+
+/**
+ * @brief For external use. Load saved image from blob onto canvas.
+ * @param blob 200x200 image to load to canvas 
+ */
+async function canvasLoadMonsieur({name, occurrences, blob}) {
+    await drawCanvasFromBlob(blob);
+    canvasInit();
+    saveDialog.querySelector('#save-dialog-name-input').value = name;
+    saveDialog.querySelector('#save-dialog-occurrences-input').value = occurrences;
+}
 
 /* PEN TOOL FUNCTIONS */
 
@@ -411,3 +422,19 @@ document.addEventListener('keydown', (event) => {
         return;
     }
 });
+
+/* INIT */
+function canvasInit() {
+    // reset captures
+    previousCaptures = [];
+    nextCaptures = [];
+
+    // initialize previous captures with initial canvas
+    captureCanvas();
+
+    // ensure undo / redo is disabled
+    disableDessineTool(undoButton);
+    disableDessineTool(redoButton);
+}
+
+canvasInit();
