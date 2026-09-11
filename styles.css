@@ -1,3 +1,5 @@
+/* STYLES GLOBAUX */
+
 html,
 body {
     margin: 0;
@@ -17,9 +19,52 @@ body {
     background-color: #111;
 }
 
+dialog {
+    background-color: #111;
+    color: #f4f4f4;
+
+    input, button {
+        font-family: "Press Start 2p", system-ui;
+        font-weight: 400;
+        font-style: normal;
+    }
+    
+    button {
+        background-color: #999;
+        border-color: #f4f4f4;
+        border-style: outset;
+        padding-left: 8px;
+        padding-right: 8px;
+        padding-top: 4px;
+        padding-bottom: 4px;
+    }
+
+    button:hover {
+        background-color: #aaa;
+    }
+    
+    button:active {
+        background-color: #777;
+        border-style: inset;
+    }
+    
+    input {
+        color: #f4f4f4;
+        background-color: #111;
+        border-color: #f4f4f4;
+        padding: 8px;
+    }
+
+    label {
+        padding: 8px;
+    }
+}
+
 img {
     image-rendering: pixelated;
 }
+
+/* CLASSES COMMUNES */
 
 .page {
     display: flex;
@@ -179,6 +224,42 @@ img {
     text-align: center;
 }
 
+#save-dialog, #publish-dialog {
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 32px;
+
+        div {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
+    
+    .dialog-title {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 500px;
+        text-align: center;
+    }
+
+    .dialog-buttons {
+        margin-top: 32px;
+    }
+}
+
+#save-dialog-img, #publish-dialog-img {
+    border-color: #777;
+    border-style: dashed;
+    display: block;
+    margin: auto;
+    width: 200px;
+    height: 200px;
+}
+
 /* GALLERY PAGE */
 
 #gallery-list {
@@ -229,6 +310,7 @@ gallery-card {
     #gallery-card-properties {
         margin-top: 12px;
         margin-bottom: 12px;
+        margin-right: 12px;
         overflow-y: hidden;
     }
 
@@ -261,6 +343,29 @@ gallery-card {
         font-size: 8px;
     }
 
+    dialog {
+        font-size: 8px;
+
+        button, input {
+            font-size: 8px;
+        }
+
+        button {
+            padding-left: 4px;
+            padding-right: 4px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+
+        input {
+            padding: 4px;
+        }
+
+        label {
+            padding: 4px;
+        }
+    }
+
     #menu {
         padding: 3px;
 
@@ -286,6 +391,30 @@ gallery-card {
     #dessine-canvas {
         width: 200px;
         height: 200px;
+    }
+
+    #save-dialog, #publish-dialog {
+        form {
+            gap: 4px;
+            margin-top: 16px;
+        }
+
+        .dialog-title {
+            max-width: 300px;
+        }
+
+        .dialog-buttons {
+            margin-top: 16px;
+        }
+
+        img {
+            image-rendering: auto;
+        }
+    }
+
+    #save-dialog-img, #publish-dialog-img {
+        width: 100px;
+        height: 100px;
     }
 
     #gallery-list {
@@ -316,6 +445,7 @@ gallery-card {
         #gallery-card-properties {
             margin-top: 6px;
             margin-bottom: 6px;
+            margin-right: 6px;
         }
     
         #gallery-card-buttons {

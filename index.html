@@ -50,17 +50,17 @@
             </div>
         </div>
         <dialog id="save-dialog">
-            <p>Sauvegarde ton monsieur</p>
+            <p class="dialog-title">Sauvegarde ton monsieur</p>
             <img id="save-dialog-img">
             <form method="dialog">
-                <p>
-                    <label>
-                        Nom du monsieur :
-                        <input id="save-dialog-name-input" name="name" value="mon magnifique monsieur">
-                    </label>
-                </p>
-                <button value="submit">Sauvegarder</button>
-                <button value="cancel">Annuler</button>
+                <div>
+                    <label for="save-dialog-name-input">Nom du monsieur :</label>
+                    <input id="save-dialog-name-input" name="name" value="mon super monsieur">
+                </div>
+                <div class="dialog-buttons">
+                    <button value="submit">Sauvegarder</button>
+                    <button value="cancel">Annuler</button>
+                </div>
             </form>
         </dialog>
         <p id="dessine-monsieur-description">Dessine ton Monsieur!</p>
@@ -75,22 +75,21 @@
             </form>
         </dialog>
         <dialog id="publish-dialog">
-            <p>Publie ton monsieur</p>
-            <p>Soumets ton monsieur pour qu'il puisse un jour être partagé au monde entier!</p>
+            <p class="dialog-title">Soumets ton monsieur pour qu'il puisse un jour être partagé au monde entier!</p>
             <img id="publish-dialog-img">
             <form method="dialog">
-                    <label>
-                        Nom du monsieur :
-                        <input id="publish-dialog-name-input" name="name" value="mon magnifique monsieur">
-                    </label>
-                    <br>
-                    <label>
-                        Ton nom :
-                        <input id="save-dialog-author-input" name="author" value="">
-                    </label>
-                </p>
-                <button value="submit">Publier</button>
-                <button value="cancel">Annuler</button>
+                <div>
+                    <label for="publish-dialog-name-input">Nom du monsieur :</label>
+                    <input id="publish-dialog-name-input" name="name" value="mon magnifique monsieur">
+                </div>
+                <div>
+                    <label for="publish-dialog-author-input">Ton nom :</label>
+                    <input id="publish-dialog-author-input" name="author" value="">
+                </div>
+                <div class="dialog-buttons">
+                    <button value="submit">Publier</button>
+                    <button value="cancel">Annuler</button>
+                </div>
             </form>
         </dialog>
     </div>
