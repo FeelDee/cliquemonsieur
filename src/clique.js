@@ -114,6 +114,10 @@ function getNextMonsieur() {
     return monsieur;
 }
 
+onMonsieurSave.subscribe(
+    monsieur => allMonsieurs.custom.push({ ...monsieur, rarity: 'custom', isCustom: true })
+);
+
 async function cliqueInit() {
     if (allMonsieurs.custom.length === 0) {
         allMonsieurs.custom = await storageGetAllMonsieurs();
