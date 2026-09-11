@@ -376,6 +376,11 @@ gallery-card {
         }
     }
 
+    select, option {
+        font-size: 8px;
+        padding: 4px;
+    }
+
     #menu {
         padding: 3px;
 
