@@ -64,6 +64,16 @@ img {
     image-rendering: pixelated;
 }
 
+select, option {
+    color: #f4f4f4;
+    background-color: #111;
+    border-color: #f4f4f4;
+    font-family: "Press Start 2p", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    padding: 8px;
+}
+
 /* CLASSES COMMUNES */
 
 .page {
