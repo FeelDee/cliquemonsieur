@@ -229,8 +229,6 @@ function stopDrawing() {
 
     // draw remaining pixels
     draw();
-
-    captureCanvas();
 }
 
 /* BUCKET TOOL FUNCTIONS */
@@ -285,26 +283,29 @@ function noop() { }
 
 let tools = {
     pen: {
-        mousedown: (x, y) => {
+        down: (x, y) => {
             startDrawing();
             drawPixel(x, y);
             line.lastX = x;
             line.lastY = y;
         },
-        mousemove: (x, y) => {
+        move: (x, y) => {
             drawLine(line.lastX, line.lastY, x, y)
             drawPixel(x, y);
             line.lastX = x;
             line.lastY = y;
         },
-        mouseup: stopDrawing,
-        mouseleave: stopDrawing,
+        up: () => {
+            stopDrawing();
+            captureCanvas();
+        },
+        cancel: stopDrawing,
     },
     bucket: {
-        mousedown: noop,
-        mousemove: noop,
-        mouseup: fill,
-        mouseleave: noop,
+        down: noop,
+        move: noop,
+        up: fill,
+        cancel: noop,
     }
 }
 
@@ -340,11 +341,12 @@ canvas.addEventListener('pointerdown', (ev) => {
         // start drawing
         drawingPointerId = ev.pointerId;
         canvas.setPointerCapture(ev.pointerId);
-        tools[currentTool].mousedown(x, y);
+        tools[currentTool].down(x, y);
+
     } else if (drawingPointerId !== null) {
         // cancel current drawing
         drawingPointerId = null;
-        tools[currentTool].mouseleave(x, y);
+        tools[currentTool].cancel();
         restoreCanvas();
     }
 });
@@ -354,7 +356,7 @@ dessinePage.addEventListener('pointermove', (ev) => {
 
     const x = Math.floor(ev.offsetX / zoomFactor);
     const y = Math.floor(ev.offsetY / zoomFactor);
-    tools[currentTool].mousemove(x, y);
+    tools[currentTool].move(x, y);
 });
 
 dessinePage.addEventListener('pointerup', (ev) => {
@@ -365,7 +367,7 @@ dessinePage.addEventListener('pointerup', (ev) => {
 
     const x = Math.floor(ev.offsetX / zoomFactor);
     const y = Math.floor(ev.offsetY / zoomFactor);
-    tools[currentTool].mouseup(x, y);
+    tools[currentTool].up(x, y);
 });
 
 dessinePage.addEventListener('pointercancel', (ev) => {
@@ -376,7 +378,8 @@ dessinePage.addEventListener('pointercancel', (ev) => {
 
     const x = Math.floor(ev.offsetX / zoomFactor);
     const y = Math.floor(ev.offsetY / zoomFactor);
-    tools[currentTool].mouseleave(x, y);
+    tools[currentTool].cancel();
+    restoreCanvas();
 });
 
 /* KEY BINDINGS */
