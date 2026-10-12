@@ -11,7 +11,7 @@ body {
     font-style: normal;
     font-size: 16px;
     overflow: hidden;
-    touch-action: manipulation;
+    touch-action: pinch-zoom;
 }
 
 body {

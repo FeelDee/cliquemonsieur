@@ -3,6 +3,8 @@ const ctx = canvas.getContext('2d', {
     willReadFrequently: true, // optimization for getImageData
 });
 
+const dessinePage =  document.getElementById('dessine-page');
+
 const CANVAS_WIDTH = ctx.canvas.width;
 const CANVAS_HEIGHT = ctx.canvas.height;
 
@@ -96,6 +98,10 @@ function redoCanvas() {
     if (nextCaptures.length == 0) {
         disableDessineTool(redoButton);
     }
+}
+
+function restoreCanvas() {
+    drawCanvasFromBlob(previousCaptures[previousCaptures.length - 1]);
 }
 
 /* SAVE */
@@ -209,21 +215,15 @@ function draw() {
     }
 }
 
-let isDrawing = false;
 let drawFunctionIntervalId = -1;
 
 function startDrawing() {
-    isDrawing = true;
-
     if (drawFunctionIntervalId < 0) {
         drawFunctionIntervalId = setInterval(draw, 50)
     }
 }
 
 function stopDrawing() {
-    if (!isDrawing) return;
-
-    isDrawing = false;
     clearInterval(drawFunctionIntervalId);
     drawFunctionIntervalId = -1;
 
@@ -292,7 +292,6 @@ let tools = {
             line.lastY = y;
         },
         mousemove: (x, y) => {
-            if (!isDrawing) return;
             drawLine(line.lastX, line.lastY, x, y)
             drawPixel(x, y);
             line.lastX = x;
@@ -302,9 +301,9 @@ let tools = {
         mouseleave: stopDrawing,
     },
     bucket: {
-        mousedown: fill,
+        mousedown: noop,
         mousemove: noop,
-        mouseup: noop,
+        mouseup: fill,
         mouseleave: noop,
     }
 }
@@ -326,64 +325,57 @@ addEventListener('resize', () => {
     zoomFactor = window.innerWidth > 780 ? 3 : 1;
 })
 
-/* CANVAS MOUSE EVENTS MAPPING */
+/* CANVAS POINTER EVENTS */
 
-canvas.addEventListener('mousedown', (ev) => {
+let drawingPointerId = null;
+const activePointers = new Set();
+
+canvas.addEventListener('pointerdown', (ev) => {
+    activePointers.add(ev.pointerId);
+
     const x = Math.floor(ev.offsetX / zoomFactor);
     const y = Math.floor(ev.offsetY / zoomFactor);
-    tools[currentTool].mousedown(x, y);
+
+    if (activePointers.size === 1) {
+        // start drawing
+        drawingPointerId = ev.pointerId;
+        canvas.setPointerCapture(ev.pointerId);
+        tools[currentTool].mousedown(x, y);
+    } else if (drawingPointerId !== null) {
+        // cancel current drawing
+        drawingPointerId = null;
+        tools[currentTool].mouseleave(x, y);
+        restoreCanvas();
+    }
 });
 
-canvas.addEventListener('mousemove', (ev) => {
+dessinePage.addEventListener('pointermove', (ev) => {
+    if (drawingPointerId == null || ev.pointerId !== drawingPointerId) return;
+
     const x = Math.floor(ev.offsetX / zoomFactor);
     const y = Math.floor(ev.offsetY / zoomFactor);
     tools[currentTool].mousemove(x, y);
 });
 
-canvas.addEventListener('mouseup', (ev) => {
+dessinePage.addEventListener('pointerup', (ev) => {
+    activePointers.delete(ev.pointerId);
+
+    if (ev.pointerId != drawingPointerId) return;
+    drawingPointerId = null;
+
     const x = Math.floor(ev.offsetX / zoomFactor);
     const y = Math.floor(ev.offsetY / zoomFactor);
     tools[currentTool].mouseup(x, y);
 });
 
-canvas.addEventListener('mouseleave', (ev) => {
+dessinePage.addEventListener('pointercancel', (ev) => {
+    activePointers.delete(ev.pointerId);
+
+    if (ev.pointerId != drawingPointerId) return;
+    drawingPointerId = null;
+
     const x = Math.floor(ev.offsetX / zoomFactor);
     const y = Math.floor(ev.offsetY / zoomFactor);
-    tools[currentTool].mouseleave(x, y);
-});
-
-/* CANVAS TOUCH EVENTS MAPPING */
-
-function getCanvasTouchCoordinates(touch) {
-    const rect = touch.target.getBoundingClientRect();
-
-    return {
-        x: Math.floor((touch.clientX - rect.left) / zoomFactor),
-        y: Math.floor((touch.clientY - rect.top) / zoomFactor)
-    };
-}
-
-canvas.addEventListener('touchstart', (ev) => {
-    if (ev.targetTouches.length != 1) return;
-    ev.preventDefault();
-    const { x, y } = getCanvasTouchCoordinates(ev.targetTouches[0]);
-    tools[currentTool].mousedown(x, y);
-});
-
-canvas.addEventListener('touchmove', (ev) => {
-    if (ev.targetTouches.length != 1) return;
-    ev.preventDefault();
-    const { x, y } = getCanvasTouchCoordinates(ev.targetTouches[0]);
-    tools[currentTool].mousemove(x, y);
-});
-
-canvas.addEventListener('touchend', (ev) => {
-    const { x, y } = getCanvasTouchCoordinates(ev.changedTouches[0]);
-    tools[currentTool].mouseup(x, y);
-});
-
-canvas.addEventListener('touchcancel', (ev) => {
-    const { x, y } = getCanvasTouchCoordinates(ev.changedTouches[0]);
     tools[currentTool].mouseleave(x, y);
 });
 
