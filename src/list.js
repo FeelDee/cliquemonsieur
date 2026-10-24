@@ -77,7 +77,7 @@ const defaultMonsieursList = [
     {
         name: 'joe bine',
         file: 'monsieurs/joe-bine.png',
-        rarity: 'rare',
+        rarity: 'common',
     },
     {
         name: 'johnny jones',
@@ -87,7 +87,7 @@ const defaultMonsieursList = [
     {
         name: 'joseph boulard',
         file: 'monsieurs/joseph-boulard.png',
-        rarity: 'common',
+        rarity: 'rare',
     },
     {
         name: 'maitre confusius',
@@ -127,7 +127,7 @@ const defaultMonsieursList = [
     {
         name: 'patate',
         file: 'monsieurs/patate.png',
-        rarity: 'rare',
+        rarity: 'common',
     },
     {
         name: 'robert',
@@ -147,7 +147,7 @@ const defaultMonsieursList = [
     {
         name: 'willy weasel',
         file: 'monsieurs/willy-weasel.png',
-        rarity: 'common', 
+        rarity: 'rare', 
     },
     {
         name: 'zebulon z459a3',
