@@ -9,9 +9,9 @@ defaultMonsieursList.forEach(monsieur => {
     allMonsieurs[monsieur.rarity].push(monsieur);
 });
 
-const P_COMMON = 0.88;
-const P_RARE = 0.10;
-const P_LEGENDARY = 0.02;
+const P_COMMON = 0.75;
+const P_RARE = 0.2;
+const P_LEGENDARY = 0.05;
 const P_CUSTOM = 0.3;
 
 const ALL_ODDS = {
