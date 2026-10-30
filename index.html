@@ -13,13 +13,13 @@
 </head>
 
 <body>
+    <script src="src/utils.js" defer></script>
     <script src="src/observable.js" defer></script>
     <script src="src/storage.js" defer></script>
     <script src="src/list.js" defer></script>
     <script src="src/draw.js" defer></script>
     <script src="src/gallery.js" defer></script>
     <script src="src/clique.js" defer></script>
-    <script src="src/utils.js" defer></script>
     <div id="clique-page" class="page">
         <p id="title">clique monsieur</p>
         <img id="monsieur" class="hidden" onclick="cliqueMonsieur()">
@@ -34,6 +34,12 @@
                 </button>
                 <button id="bucket-tool" class="icon-button" onclick="changeTool('bucket')">
                     <img src="assets/bucket.png">
+                </button>
+                <button id="brush-tool" class="icon-button" onclick="changeTool('brush')">
+                    <img src="assets/brush.png">
+                </button>
+                <button id="eraser-tool" class="icon-button" onclick="changeTool('eraser')">
+                    <img src="assets/eraser.png">
                 </button>
                 <input type="color" id="color-picker-input" oninput="changeColor()">
             </div>

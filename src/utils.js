@@ -33,6 +33,11 @@ function navigate(page) {
     currentPage = page;
 }
 
+/**
+ * Does nothing. Use this function in templates when you do not need to do any operation.
+ */
+function noop() { }
+
 let snackBarTimeout = null;
 
 /**

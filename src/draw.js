@@ -62,6 +62,7 @@ async function drawCanvasFromBlob(blob) {
     return new Promise((resolve, reject) => {
         img.onload = () => {
             ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            ctx.globalCompositeOperation = 'source-over';
             ctx.drawImage(img, 0, 0);
             resolve();
         };
@@ -138,14 +139,24 @@ async function canvasLoadMonsieur({name, blob}) {
     saveDialog.querySelector('#save-dialog-name-input').value = name;
 }
 
-/* PEN TOOL FUNCTIONS */
+/* DRAWING TOOLS FUNCTIONS */
 
 const pixelsToDraw = [];
 
 function drawPixel(x, y) {
-    // Do not render during mouse events
     ctx.fillRect(x, y, 1, 1);
 }
+
+function drawBrush(x, y) {
+    ctx.fillRect(x - 2, y - 2, 4, 4)
+}
+
+/**
+ * @brief Template function to be changed according to drawing tool
+ * @param {number} x coordinate
+ * @param {number} y coordinate
+ */
+let draw = drawPixel;
 
 function drawLine(x0, y0, x1, y1) {
 
@@ -176,7 +187,7 @@ function drawLineLowPitch(x0, y0, x1, y1) {
     let y = y0;
 
     for (let x = x0; x <= x1; x++) {
-        drawPixel(x, y);
+        draw(x, y);
         if (err > 0) {
             y += yi;
             err += 2 * (dy - dx);
@@ -185,7 +196,7 @@ function drawLineLowPitch(x0, y0, x1, y1) {
         }
     }
 
-    drawPixel(x1, y1);
+    draw(x1, y1);
 }
 
 function drawLineHighPitch(x0, y0, x1, y1) {
@@ -197,7 +208,7 @@ function drawLineHighPitch(x0, y0, x1, y1) {
     let x = x0;
 
     for (let y = y0; y <= y1; y++) {
-        drawPixel(x, y);
+        draw(x, y);
         if (err > 0) {
             x += xi;
             err += 2 * (dx - dy);
@@ -206,7 +217,22 @@ function drawLineHighPitch(x0, y0, x1, y1) {
         }
     }
 
-    drawPixel(x1, y1);
+    draw(x1, y1);
+}
+
+let line = { lastX: 0, lastY: 0 }
+
+function onPenDown(x, y) {
+    draw(x, y);
+    line.lastX = x;
+    line.lastY = y;
+}
+
+function onPenMove(x, y) {
+    drawLine(line.lastX, line.lastY, x, y)
+    draw(x, y);
+    line.lastX = x;
+    line.lastY = y;
 }
 
 /* BUCKET TOOL FUNCTIONS */
@@ -255,33 +281,47 @@ function fill(x, y) {
     captureCanvas();
 }
 
-let line = { lastX: 0, lastY: 0 }
-
-function noop() { }
+/* TOOL MAPPING */
 
 let tools = {
     pen: {
-        down: (x, y) => {
-            drawPixel(x, y);
-            line.lastX = x;
-            line.lastY = y;
-        },
-        move: (x, y) => {
-            drawLine(line.lastX, line.lastY, x, y)
-            drawPixel(x, y);
-            line.lastX = x;
-            line.lastY = y;
-        },
-        up: () => {
-            captureCanvas();
-        },
+        select: () => { draw = drawPixel; },
+        down: onPenDown,
+        move: onPenMove,
+        up: captureCanvas,
         cancel: noop,
+        unselect: noop,
     },
     bucket: {
+        select: noop,
         down: noop,
         move: noop,
         up: fill,
         cancel: noop,
+        unselect: noop,
+    },
+    brush: {
+        select: () => { draw = drawBrush; },
+        down: onPenDown,
+        move: onPenMove,
+        up: captureCanvas,
+        cancel: noop,
+        unselect: noop,
+    },
+    eraser: {
+        select: () => { draw = drawBrush; },
+        down: (x, y) => { 
+            ctx.globalCompositeOperation = 'destination-out';
+            onPenDown(x, y);
+        },
+        move: onPenMove,
+        up: () => {
+            ctx.globalCompositeOperation = 'source-over';
+            captureCanvas();
+        },
+        cancel: () => {
+            ctx.globalCompositeOperation = 'source-over';
+        },
     }
 }
 
@@ -292,6 +332,8 @@ function changeTool(tool) {
 
     document.getElementById(`${currentTool}-tool`).classList.remove('active');
     document.getElementById(`${tool}-tool`).classList.add('active');
+
+    tools[tool].select()
 
     currentTool = tool;
 }
@@ -352,11 +394,18 @@ dessinePage.addEventListener('pointercancel', (ev) => {
     if (ev.pointerId != drawingPointerId) return;
     drawingPointerId = null;
 
-    const x = Math.floor(ev.offsetX / zoomFactor);
-    const y = Math.floor(ev.offsetY / zoomFactor);
     tools[currentTool].cancel();
     restoreCanvas();
 });
+
+function cancelCurrentTool() {
+    if (drawingPointerId === null) return;
+
+    activePointers.clear();
+    drawingPointerId = null;
+    tools[currentTool].cancel();
+    restoreCanvas();
+}
 
 /* KEY BINDINGS */
 
@@ -369,7 +418,12 @@ document.addEventListener('keydown', (event) => {
 
     if (isUndo) {
         event.preventDefault();
-        undoCanvas();
+
+        if (activePointers.size > 0) {
+            cancelCurrentTool();
+        } else {
+            undoCanvas();
+        }
         return;
     }
 
@@ -379,6 +433,7 @@ document.addEventListener('keydown', (event) => {
 
     if (isRedo) {
         event.preventDefault();
+        cancelCurrentTool();
         redoCanvas();
         return;
     }
