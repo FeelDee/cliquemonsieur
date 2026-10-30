@@ -144,7 +144,7 @@ const pixelsToDraw = [];
 
 function drawPixel(x, y) {
     // Do not render during mouse events
-    pixelsToDraw.push({ x, y });
+    ctx.fillRect(x, y, 1, 1);
 }
 
 function drawLine(x0, y0, x1, y1) {
@@ -209,28 +209,6 @@ function drawLineHighPitch(x0, y0, x1, y1) {
     drawPixel(x1, y1);
 }
 
-function draw() {
-    while ({ x, y } = pixelsToDraw.shift() ?? false) {
-        ctx.fillRect(x, y, 1, 1);
-    }
-}
-
-let drawFunctionIntervalId = -1;
-
-function startDrawing() {
-    if (drawFunctionIntervalId < 0) {
-        drawFunctionIntervalId = setInterval(draw, 50)
-    }
-}
-
-function stopDrawing() {
-    clearInterval(drawFunctionIntervalId);
-    drawFunctionIntervalId = -1;
-
-    // draw remaining pixels
-    draw();
-}
-
 /* BUCKET TOOL FUNCTIONS */
 
 function getPixelData(data, { x, y }) {
@@ -284,7 +262,6 @@ function noop() { }
 let tools = {
     pen: {
         down: (x, y) => {
-            startDrawing();
             drawPixel(x, y);
             line.lastX = x;
             line.lastY = y;
@@ -296,10 +273,9 @@ let tools = {
             line.lastY = y;
         },
         up: () => {
-            stopDrawing();
             captureCanvas();
         },
-        cancel: stopDrawing,
+        cancel: noop,
     },
     bucket: {
         down: noop,
